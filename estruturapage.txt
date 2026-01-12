@@ -1,0 +1,43 @@
+[0–3]    magic        (4)
+[4–5]    version      (2)
+[6–7]    page_type    (2)
+[8–15]   page_id      (8)
+[16–19]  flags        (4)
+[20–21]  free_start   (2)
+[22–23]  free_end     (2)
+[24–31]  lsn          (8)
+[32–63]  reserved     (32)
+
+heap = 1
+index = 2
+
+ativo = 0
+removido = 1
+
+
+[x] Page layout
+[x] Heap page
+[x] Persistência
+[x] Page manager
+[ ] Heap manager      <-- AGORA
+[ ] Table abstraction
+[ ] Index (B+Tree)
+[ ] WAL
+[ ] SQL / SQM
+
+# BUFFER MANAGER 
+sem ele é feito: buffer = self.page_manager.load_page(page_id)
+isso sempre: abre arquivo, le do disco, cria um bytearray, fecha arquivo
+ISSO É EXTREMAMENTE CARO E PESADO
+
+O buffer manager vai resolver isso guardando em memória
+- A página só é lida do disco se não estiver no buffer.
+
+dentro desse butter ele vai guardar:
+self.pages = {
+   page_id: {
+      "buffer": bytearray, # pagina
+      "dirty": False, # foi alterada?
+      "pin": 0 # quantos usuarios estao usando essa pagina? (pin > 0 NAO PODE REMOVER DA MEMORIA)
+   }
+}
