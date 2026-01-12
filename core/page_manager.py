@@ -4,10 +4,11 @@ import os
 from core.page import create_empty_page
 from core.config import DATA_DIR
 
+
 class PageManager:
     def __init__(self, data_dir=DATA_DIR):
         self.data_dir = data_dir
-        self.pages = {} # page_id -> buffer
+        self.pages = {}  # page_id -> buffer
         os.makedirs(self.data_dir, exist_ok=True)
         self.next_page_id = self._diskover_next_page_id()
 
@@ -18,12 +19,14 @@ class PageManager:
 
         for name in files:
             if name.startswith("page_"):
-                pid = int(name[5:-3]) # pula os 5 primeiros caracteres e elimina os ultimos 3 (page_) (.db)
+                pid = int(
+                    name[5:-3]
+                )  # pula os 5 primeiros caracteres e elimina os ultimos 3 (page_) (.db)
                 page_ids.append(pid)
 
         if not page_ids:
             return 0
-        
+
         return max(page_ids) + 1
 
     def create_page(self, page_type="heap"):
@@ -39,7 +42,7 @@ class PageManager:
     def load_page(self, page_id):
         print(f"PAGE MANAGER: load_page {page_id}")
         return self.read_page_from_disk(page_id)
-        
+
     def save_page(self, buffer, page_id):
         print(f"PAGE MANAGER: save_page {page_id}")
         self.write_page_to_disk(buffer, page_id)
@@ -47,13 +50,14 @@ class PageManager:
     def write_page_to_disk(self, buffer, page_id):
         print(f"PAGE MANAGER: write_page_to_disk {page_id}")
         filename = os.path.join(DATA_DIR, f"page_{page_id}.db")
-        with open(filename, "wb") as f: # wb = write binary
+        with open(filename, "wb") as f:  # wb = write binary
             f.write(buffer)
 
     def read_page_from_disk(self, page_id):
         print(f"PAGE MANAGER: read_page_from_disk {page_id}")
         filename = os.path.join(DATA_DIR, f"page_{page_id}.db")
-        with open(filename, "rb") as f: # rb = read binary
+        with open(filename, "rb") as f:  # rb = read binary
             buffer = bytearray(f.read())
         return buffer
+
     # def allocate_record(record_bytes):
