@@ -4,6 +4,7 @@ from core.config import DATA_DIR
 
 CATALOG_FILE = os.path.join(DATA_DIR, "catalog.json")
 
+
 class Catalog:
     def __init__(self):
         if os.path.exists(CATALOG_FILE):
@@ -28,9 +29,7 @@ class Catalog:
         if name in self.tables:
             raise ValueError("Tabela já existe")
 
-        self.tables[name] = {
-            "heap_pages": []
-        }
+        self.tables[name] = {"heap_pages": []}
 
         self._save()
 

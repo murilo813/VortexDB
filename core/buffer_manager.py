@@ -8,11 +8,11 @@ class BufferManager():
         self.pages = {} # cache
         self.order = [] # controla FIFO
 
-    def get_page(sellf, page_id): # devolve buffer
+    def get_page(self, page_id): # devolve buffer
         # se ja está no buffer
         print(f"BUFFER_MANAGER: get_page {page_id}")
         if page_id in self.pages:
-            entry - self.pages[page_id]
+            entry = self.pages[page_id]
             entry["pin"] += 1
             return entry["buffer"] 
         
@@ -60,8 +60,8 @@ class BufferManager():
 
         raise RuntimeError("Todas as páginas estão pinadas")
 
-    def flush_all(): # grava tudo
-        print("BUFFER_MANAGER: flush_all")
+    def flush_all(self): # grava tudo
+        print("BUFFER_MANAGER: flush_Fall")
         for page_id, entry in self.pages.items():
             if entry["dirty"]:
                 self.page_manager.save_page(entry["buffer"], page_id)
