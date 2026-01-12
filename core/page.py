@@ -53,11 +53,11 @@ def write_header(PageHeader, buffer):
 
 # valida o header
 def validate_header(PageHeader):
-    if PageHeader["magic"] != magic:
+    if PageHeader["magic"] != DB_MAGIC:
         return False
     elif PageHeader["version"] != DB_VERSION:
         return False
-    elif PageHeader["page_type"] not in [heap, index]:
+    elif PageHeader["page_type"] not in mapping:
         return False
     elif PageHeader["free_start"] > PageHeader["free_end"]:
         return False
