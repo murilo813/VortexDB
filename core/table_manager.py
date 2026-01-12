@@ -1,4 +1,5 @@
-from core.heap_manager import HeapManager 
+from core.heap_manager import HeapManager
+
 
 class TableManager:
     def __init__(self, page_manager, catalog):
@@ -14,7 +15,7 @@ class TableManager:
         heap.heap_pages = table_meta["heap_pages"]
 
         self.heaps[name] = heap
-    
+
     def insert(self, table, record_bytes):
         heap = self.heaps.get(table)
         if not heap:
@@ -27,7 +28,7 @@ class TableManager:
             self.catalog.add_heap_page(table, page_id)
 
         return page_id, offset
-    
+
     def scan(self, table):
         heap = self.heaps.get(table)
         if not heap:
