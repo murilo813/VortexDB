@@ -25,5 +25,7 @@ jobs:
 
     - name: Executar Pytest
       run: |
+        mkdir -p data
+        touch data/.gitkeep
         export PYTHONPATH=$PYTHONPATH:$(pwd)
         pytest
