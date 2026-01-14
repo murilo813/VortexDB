@@ -1,6 +1,6 @@
 from core.config import PAGE_SIZE, DB_MAGIC, DB_VERSION
 
-mapping = {"heap": 1, "index": 2}
+mapping = {"heap": 1, "index": 2}  # necessita de ajuste
 mutable_fields = ["flags", "free_start", "free_end", "lsn"]
 
 
@@ -69,7 +69,7 @@ def validate_header(PageHeader):
         return True
 
 
-# atualiza campos imutáveis
+# atualiza campos mutáveis
 def update_header_field(PageHeader, buffer, updates):
     if "free_start" in updates or "free_end" in updates:
         new_free_start = updates.get(
@@ -116,7 +116,7 @@ def insert_record(buffer, record_bytes):
 
 
 def read_record(buffer, offset):
-    record_size = int.from_bytes(buffer[offset : offset + 2], byteorder="little")
+    record_size = int.from_bytes(buffer[offset + 1 : offset + 3], byteorder="little")
     record_data = buffer[offset + 2 : offset + 2 + record_size]
 
     return record_data

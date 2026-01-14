@@ -8,12 +8,11 @@ from core.config import DATA_DIR
 class PageManager:
     def __init__(self, data_dir=DATA_DIR):
         self.data_dir = data_dir
-        self.pages = {}  # page_id -> buffer
         os.makedirs(self.data_dir, exist_ok=True)
-        self.next_page_id = self._diskover_next_page_id()
+        self.next_page_id = self._dicover_next_page_id()
 
-    def _diskover_next_page_id(self):
-        print("PAGE MANAGER: _diskover_next_page_id")
+    def _dicover_next_page_id(self):
+        print("PAGE MANAGER: _dicover_next_page_id")
         files = os.listdir(self.data_dir)
         page_ids = []
 
@@ -37,7 +36,7 @@ class PageManager:
         self.write_page_to_disk(buffer, page_id)
 
         self.next_page_id += 1
-        return page_id, buffer
+        return page_id
 
     def load_page(self, page_id):
         print(f"PAGE MANAGER: load_page {page_id}")

@@ -2,14 +2,14 @@ from core.heap_manager import HeapManager
 
 
 class TableManager:
-    def __init__(self, page_manager, catalog):
-        self.page_manager = page_manager
+    def __init__(self, buffer_manager, catalog):
+        self.buffer_manager = buffer_manager
         self.catalog = catalog
         self.heaps = {}
 
     def create_table(self, name):
         self.catalog.create_table(name)
-        heap = HeapManager(self.page_manager)
+        heap = HeapManager(self.buffer_manager)
 
         table_meta = self.catalog.get_table(name)
         heap.heap_pages = table_meta["heap_pages"]
