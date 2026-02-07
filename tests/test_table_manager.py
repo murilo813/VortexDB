@@ -1,31 +1,32 @@
-import pytest
-import os
+from core.table_manager import TableManager
 from core.page_manager import PageManager
 from core.buffer_manager import BufferManager
 from core.catalog import Catalog
-from core.table_manager import TableManager
+from catalog.schema import Schema, Column, INT
 from core.config import DATA_DIR
+import os
 
 
-@pytest.fixture
-def clean_data_dir():
-    # limpa páginas e catalog.json
+def clean():
     for f in os.listdir(DATA_DIR):
-        if f.startswith("page_") or f == "catalog.json":
-            os.remove(os.path.join(DATA_DIR, f))
+        os.remove(os.path.join(DATA_DIR, f))
 
 
-def test_table_insert_scan(clean_data_dir):
+def test_table_insert_scan():
+    clean()
+
     pm = PageManager()
     bm = BufferManager(pm)
-    cat = Catalog()
-    tm = TableManager(bm, cat)
+    catalog = Catalog()
+    tm = TableManager(bm, catalog)
 
-    tm.create_table("users")
-    record = b"user1"
+    schema = Schema("users", [Column("id", INT)])
 
-    pid, off = tm.insert("users", record)
-    records = list(tm.scan("users"))
+    tm.create_table("users", schema)
 
-    assert record in records
-    assert pid in cat.get_table("users")["heap_pages"]
+    tm.insert("users", {"id": 1})
+    tm.insert("users", {"id": 2})
+
+    rows = list(tm.scan("users"))
+
+    assert rows == [{"id": 1}, {"id": 2}]

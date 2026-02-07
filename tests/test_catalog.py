@@ -2,6 +2,8 @@ import pytest
 import os
 from core.catalog import Catalog
 from core.config import DATA_DIR
+from catalog.schema import Schema, Column
+from catalog.schema import INT
 
 CATALOG_FILE = os.path.join(DATA_DIR, "catalog.json")
 
@@ -14,7 +16,8 @@ def clean_catalog():
 
 def test_create_table_add_get(clean_catalog):
     cat = Catalog()
-    cat.create_table("users")
+    schema = Schema("users", [Column("id", INT)])
+    cat.create_table("users", schema)
     cat.add_heap_page("users", 0)
 
     table = cat.get_table("users")

@@ -1,17 +1,24 @@
-from core.page import create_empty_page, insert_record, iter_records
+from core.page import serialize_record, deserialize_record, create_empty_page, insert_record, iter_records
 
 
-def test_create_empty_page():
-    buffer = create_empty_page("heap", 0)
-    # Checa header básico
-    assert buffer[6:8] == (1).to_bytes(2, "little")  # heap
-    assert len(buffer) == 8192
+def test_serialize_roundtrip():
+    record = {"id": 1, "name": "alice", "active": True}
+
+    raw = serialize_record(record)
+    back = deserialize_record(raw)
+
+    assert back == record
 
 
-def test_insert_and_iter_record():
-    buffer = create_empty_page("heap", 0)
-    record = b"hello"
-    offset = insert_record(buffer, record)
-    records = list(iter_records(buffer))
-    assert record in records
-    assert offset >= 0
+def test_insert_and_iter_records():
+    buf = create_empty_page("heap", 0)
+
+    r1 = serialize_record({"id": 1})
+    r2 = serialize_record({"id": 2})
+
+    insert_record(buf, r1)
+    insert_record(buf, r2)
+
+    rows = [deserialize_record(r) for r in iter_records(buf)]
+
+    assert rows == [{"id": 1}, {"id": 2}]

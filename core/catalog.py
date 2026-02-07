@@ -24,12 +24,16 @@ class Catalog:
         with open(CATALOG_FILE, "w") as f:
             json.dump({"tables": self.tables}, f, indent=2)
 
-    def create_table(self, name):
+    def create_table(self, name, schema):
         print(f"CATALOG: create_table {name}")
+
         if name in self.tables:
             raise ValueError("Tabela já existe")
 
-        self.tables[name] = {"heap_pages": []}
+        self.tables[name] = {
+            "heap_pages": [],
+            "schema": schema.to_dict()
+        }
 
         self._save()
 

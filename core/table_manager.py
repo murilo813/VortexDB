@@ -1,4 +1,5 @@
 from core.heap_manager import HeapManager
+from catalog.schema import Schema
 
 
 class TableManager:
@@ -7,9 +8,9 @@ class TableManager:
         self.catalog = catalog
         self.heaps = {}
 
-    def create_table(self, name):
-        self.catalog.create_table(name)
-        heap = HeapManager(self.buffer_manager)
+    def create_table(self, name, schema):
+        self.catalog.create_table(name, schema)
+        heap = HeapManager(self.buffer_manager, schema)
 
         table_meta = self.catalog.get_table(name)
         heap.heap_pages = table_meta["heap_pages"]
@@ -20,10 +21,14 @@ class TableManager:
         heap = self.heaps.get(table)
         if not heap:
             raise ValueError("Tabela não existe")
+        
+        table_meta = self.catalog.get_table(table)
+        schema = Schema.from_dict(table_meta["schema"])
+
+        schema.validate(record_bytes)
 
         page_id, offset = heap.insert(record_bytes)
 
-        # se a página for nova, registra no catalogo
         if page_id not in self.catalog.get_table(table)["heap_pages"]:
             self.catalog.add_heap_page(table, page_id)
 
