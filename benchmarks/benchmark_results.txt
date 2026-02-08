@@ -1,0 +1,30 @@
+
+==================================================
+VORTEXDB BENCHMARK - DATA: 2026-02-08 09:46:56
+==================================================
+AMBIENTE:
+- SO: Windows
+- CPU: AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
+- Linguagem: Python 3.13.3
+
+CONFIGURAÇÕES DO TESTE:
+- Registros:      100000
+- Payload:        150 bytes
+- Buffer Pool:    50 pgs
+- Flush a cada:   1000 registros
+- Arquivos .vortex gerados: 2080
+
+RESULTADOS:
+[INSERÇÃO]
+- Tempo Total:    23.6150 s
+- Vazão (Throughput): 4234 reg/s
+
+[BUSCA (PONTO ÚNICO)]
+- Estratégia:     FULL HEAP SCAN (Linear)
+- Alvo ID:        99999
+- Tempo de Busca: 18.3821 s
+
+STATUS DO MOTOR: 
+[ ] B-Tree Index  | [X] Heap Scan Only
+[ ] Write-Ahead Log | [ ] Rust Engine
+--------------------------------------------------
