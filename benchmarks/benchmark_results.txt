@@ -47,12 +47,15 @@ CONFIGURAÇÕES DO TESTE:
 RESULTADOS:
 [INSERÇÃO + INDEXAÇÃO]
 - Tempo Total:    4.6847 s
-- Vazão (Throughput): 21345 reg/s (Por causa da refatoração feita no BufferManager. Ao eliminar o I/O redundante de disco no create_page e trabalhar pesado na RAM, mas isto não impacta no teste de busca.)
+- Vazão (Throughput): 21345 reg/s 
 
 [BUSCA (PONTO ÚNICO)]
 - Estratégia:      B-TREE INDEX SEEK (O(log n))
 - Alvo ID:         99999
 - Tempo de Busca: 0.0001 s
+(Por causa da refatoração feita no BufferManager. 
+Ao eliminar o I/O redundante de disco no create_page e 
+trabalhar pesado na RAM, mas isto não impacta no teste de busca.)
 
 STATUS DO MOTOR: 
 [X] B-Tree Index  | [X] Heap Scan Enabled
