@@ -48,7 +48,7 @@ Abaixo, as capturas dos benchmarks demonstrando a diferença brutal de performan
 ![Benchmark Antigo - Scan](benchmarks/VortexDBbenchmarkV1.png)
 
 **2. Otimizado (Com B+Tree Index + RAM Buffer):**
-![Benchmark Novo - BTree](benchmarks/VortexDBbenchmarkV1.png)
+![Benchmark Novo - BTree](benchmarks/VortexDBbenchmarkV2.png)
 
 *Nota: O ganho em escrita (Throughput) deve-se à refatoração do Buffer Manager, que reduziu o overhead de I/O síncrono no disco.*
 
