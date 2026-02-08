@@ -12,12 +12,11 @@ class PageManager:
         self.next_page_id = self._dicover_next_page_id()
 
     def _dicover_next_page_id(self):
-        print("PAGE MANAGER: _dicover_next_page_id")
         files = os.listdir(self.data_dir)
         page_ids = []
 
         for name in files:
-            if name.startswith("page_"):
+            if name.endswith(".vortex"):
                 pid = int(
                     name[5:-3]
                 )  # pula os 5 primeiros caracteres e elimina os ultimos 3 (page_) (.db)
@@ -29,32 +28,24 @@ class PageManager:
         return max(page_ids) + 1
 
     def create_page(self, page_type="heap"):
-        print("PAGE MANAGER: create_page")
         page_id = self.next_page_id
-        buffer = create_empty_page(page_type, page_id)
-
-        self.write_page_to_disk(buffer, page_id)
 
         self.next_page_id += 1
         return page_id
 
     def load_page(self, page_id):
-        print(f"PAGE MANAGER: load_page {page_id}")
         return self.read_page_from_disk(page_id)
 
     def save_page(self, buffer, page_id):
-        print(f"PAGE MANAGER: save_page {page_id}")
         self.write_page_to_disk(buffer, page_id)
 
     def write_page_to_disk(self, buffer, page_id):
-        print(f"PAGE MANAGER: write_page_to_disk {page_id}")
-        filename = os.path.join(DATA_DIR, f"page_{page_id}.db")
+        filename = os.path.join(DATA_DIR, f"page_{page_id}.vortex")
         with open(filename, "wb") as f:  # wb = write binary
             f.write(buffer)
 
     def read_page_from_disk(self, page_id):
-        print(f"PAGE MANAGER: read_page_from_disk {page_id}")
-        filename = os.path.join(DATA_DIR, f"page_{page_id}.db")
+        filename = os.path.join(DATA_DIR, f"page_{page_id}.vortex")
         with open(filename, "rb") as f:  # rb = read binary
             buffer = bytearray(f.read())
         return buffer
