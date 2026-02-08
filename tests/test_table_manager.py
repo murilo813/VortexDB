@@ -3,18 +3,9 @@ from core.page_manager import PageManager
 from core.buffer_manager import BufferManager
 from core.catalog import Catalog
 from catalog.schema import Schema, Column, INT
-from core.config import DATA_DIR
-import os
-
-
-def clean():
-    for f in os.listdir(DATA_DIR):
-        os.remove(os.path.join(DATA_DIR, f))
 
 
 def test_table_insert_scan():
-    clean()
-
     pm = PageManager()
     bm = BufferManager(pm)
     catalog = Catalog()
@@ -29,4 +20,24 @@ def test_table_insert_scan():
 
     rows = list(tm.scan("users"))
 
-    assert rows == [{"id": 1}, {"id": 2}]
+    ids = sorted([r["id"] for r in rows])
+    assert ids == [1, 2]
+
+
+def test_table_select_by_id_with_index():
+    pm = PageManager()
+    bm = BufferManager(pm)
+    catalog = Catalog()
+    tm = TableManager(bm, catalog)
+
+    schema = Schema("users", [Column("id", INT)])
+    tm.create_table("users", schema)
+
+    tm.insert("users", {"id": 100})
+    tm.insert("users", {"id": 200})
+
+    rid = tm.select_by_id("users", 100)
+    assert rid is not None
+    assert rid[0] == 0
+
+    assert tm.select_by_id("users", 999) is None

@@ -19,3 +19,9 @@ def test_schema_missing_column():
 
     with pytest.raises(ValueError):
         schema.validate({})
+
+
+def test_schema_wrong_type():
+    schema = Schema("users", [Column("id", INT)])
+    with pytest.raises(TypeError):
+        schema.validate({"id": "não é um int"})

@@ -1,30 +1,33 @@
 import pytest
-import os
 from core.page_manager import PageManager
 from core.buffer_manager import BufferManager
-from core.config import DATA_DIR
 
 
-@pytest.fixture
-def clean_data_dir():
-    for f in os.listdir(DATA_DIR):
-        if f.startswith("page_"):
-            os.remove(os.path.join(DATA_DIR, f))
-
-
-def test_buffer_create_get_flush(clean_data_dir):
+def test_buffer_create_get_flush():
     pm = PageManager()
     bm = BufferManager(pm, max_pages=2)
+
     page_id, buffer = bm.create_page("heap")
 
-    # modifica o buffer
     buffer[64] = 123
     bm.mark_dirty(page_id)
     bm.unpin(page_id)
 
     bm.flush_all()
 
-    # recarrega
     loaded = bm.get_page(page_id)
     assert loaded[64] == 123
     bm.unpin(page_id)
+
+
+def test_buffer_full_eviction():
+    pm = PageManager()
+    bm = BufferManager(pm, max_pages=1)
+
+    p1, _ = bm.create_page("heap")
+    bm.unpin(p1)
+
+    p2, _ = bm.create_page("heap")
+    assert p2 == 1
+    assert p1 not in bm.pages
+    bm.unpin(p2)
