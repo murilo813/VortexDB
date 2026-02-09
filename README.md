@@ -24,10 +24,6 @@ Para garantir que o acesso ao disco seja previsível e atômico, o Vortex utiliz
 ## 🎯 Objetivo do Projeto
 Este projeto foi iniciado principalmente para o estudo profundo de funcionamento de bancos de dados relacionais e sistemas de baixo nível. No entanto, a pretensão é evoluir o VortexDB para que se torne uma opção viável, rápida e leve para projetos reais que demandam controle total sobre a persistência de dados.
 
-## 🤝 Contribuição
-Se você gosta de escovar bits e não tem medo de ponteiros, *locks* e gerenciamento de memória no braço, sinta-se em casa para contribuir.
-
-
 ## 📊 Benchmarks & Performance
 O VortexDB é testado rigorosamente sob estresse para garantir que a evolução da arquitetura reflita em ganhos reais de velocidade. Mantemos um histórico detalhado de performance para rastrear regressões e vitórias algorítmicas.
 
